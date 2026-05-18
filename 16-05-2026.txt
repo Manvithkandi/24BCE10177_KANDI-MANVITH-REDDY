@@ -1,0 +1,50 @@
+show Databases;
+create database vitcampus;
+
+use vitcampus;
+
+create table CSE(
+sid int8 PRIMARY KEY,
+sname varchar(50),
+smarks int1
+);
+Drop table cse;
+create table ECE(
+sid int8,
+sname varchar(50),
+smarks int1
+);
+create table Mech(
+sid int8,
+sname varchar(50),
+smarks int1
+);
+
+show tables from vitcampus;
+select * from cse; 
+insert into cse values(101,'manvith',90); 
+delete from cse where sid=101;
+
+-- Inserting 5 unique rows into the CSE table
+INSERT INTO cse (sid, sname, smarks) VALUES
+(101, 'Manvith', 90),
+(102, 'Rahul', 85),
+(103, 'Priya', 92),
+(104, 'Amit', 78),
+(105, 'Neha', 88);
+
+-- Inserting 5 unique rows into the ECE table
+INSERT INTO ece (sid, sname, smarks) VALUES
+(201, 'Kiran', 75),
+(202, 'Rohan', 82),
+(203, 'Sanya', 89),
+(204, 'Vikas', 91),
+(205, 'Pooja', 84);
+
+-- Inserting 5 unique rows into the Mech table
+INSERT INTO mech (sid, sname, smarks) VALUES
+(301, 'Arjun', 70),
+(302, 'Karan', 76),
+(303, 'Deepak', 80),
+(304, 'Sneha', 85),
+(305, 'Raj', 79);
