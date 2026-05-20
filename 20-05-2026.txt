@@ -1,0 +1,121 @@
+use test;
+/* SQL Constraints --------------
+unique email,mob, adhar , reg no.,roll no.
+rollnum - unique, not null
+default - instead of null
+check - (write the condition acc to our wish)
+key's - primary key and foreign key
+*/
+CREATE TABLE Persons (
+    ID int NOT NULL,
+    LastName varchar(255) unique not null CHECK (age >= 18),
+    FirstName varchar(255) NOT NULL,
+    Age int,
+    City varchar(225) DEFAULT 'BHOPAL' 
+);
+desc persons;
+DROP TABLE PERSONS;
+insert into persons values (101,'V','Jayanth',null);
+select * from persons;
+
+ALTER TABLE Persons
+ADD UNIQUE (AGE);
+
+ALTER TABLE Persons
+DROP CONSTRAINT Age;
+
+ALTER TABLE Persons
+ADD constraint check (age>=18);  /*we can add one at a time when we use add */
+
+insert into persons values (101,'K','Jayanth',20,NULL);
+select * from persons;
+
+insert into persons values (101,'L','Jayanth',18,NULL);
+select * from persons;
+
+/*so we use modify */
+ALTER TABLE Persons MODIFY age INT NOT NULL UNIQUE CHECK (age >= 18);
+
+/*
+When you use ADD CONSTRAINT, the database expects you to add one specific rule
+ at a time, and you have to tell it exactly which column that rule applies to 
+ (for example, UNIQUE(age)).
+
+Furthermore, databases usually don't let you use ADD CONSTRAINT for NOT NULL. They
+ treat NOT NULL as a core property of the column itself, not as an add-on constraint.
+
+If you want to apply all three rules (NOT NULL, UNIQUE, and CHECK) to an existing 
+column in a single line, you skip ADD CONSTRAINT and instead redefine the column using
+ MODIFY (in MySQL/Oracle).
+
+If constraint A was created as a named constraint (like ADD CONSTRAINT chk_old_age CHECK
+...), it will not vanish when you run a MODIFY statement. It will stay active in the background
+ alongside your new rules (B, C, and D).
+
+This creates a hidden conflict. If constraint A requires age >= 10 and your new constraint B 
+requires age >= 18, both are checked. If they ever contradict each other, you won't be able to 
+insert any data at all.
+
+Why does this happen?
+Databases separate column properties from table constraints:
+
+Column Properties (like NOT NULL or data types) do get overwritten by MODIFY.
+
+Table Constraints (like CHECK or UNIQUE) are stored as separate objects in the 
+database's system catalog. MODIFY does not automatically delete those objects.
+
+The Right Way to Switch Rules
+To get rid of constraint A completely and replace it with B, C, and D, you must drop 
+the old one first.
+
+SQL
+-- 1. Get rid of the old constraint (A)
+ALTER TABLE Persons DROP CONSTRAINT chk_old_age;
+
+-- 2. Apply your new rules (B, C, and D) in a single line
+ALTER TABLE Persons MODIFY age INT NOT NULL UNIQUE CHECK (age >= 18);
+*/
+
+/* DEFAULT --DEFAULT is treated as a column property rather than a standalone table constraint,
+ so you cannot use ADD CONSTRAINT to apply it.*/
+ALTER TABLE Persons ALTER COLUMN City SET DEFAULT 'Bhopal';
+/* BEst practice to give the column names-then only we no need to give 5th column.*/
+INSERT INTO Persons (ID, LastName, FirstName, Age) 
+VALUES (1, 'Reddy', 'Manvith', 20);
+
+INSERT INTO Persons 
+VALUES (1, 'Reddy', 'Manvith', 20, DEFAULT);
+
+aLTER TABLE PeRSONS
+add primary key (ID);
+
+Alter table persons
+drop primary key;
+
+/*  foreign key and primary key-----------*/
+Create table Category(
+ cid int not null primary key,
+ cname varchar(225) not null
+ );
+ insert into Category(cid,cname) Values(101,'electronics'),
+ (102,'home appliances');
+ 
+ select * from category;
+ 
+ Create table Products(
+ pid int primary key,
+ pname varchar(225) not null,
+ cid int,
+ FOREIGN KEY (cid) REFERENCES category(cid));
+ 
+ insert into Products(pid,pname,cid) Values(1,'a',101),
+ (2,'b',102),
+ (3,'c',101),
+ (4,'d',102),
+ (5,'e',101);
+ 
+ select * from products;
+  insert into Products(pid,pname,cid) Values(6,'a',103); /* how can u add child without parent*/
+  /* throws an error */
+  delete from category where cid=101;  /* category is a parent(we can't update or delete)*/
+  
