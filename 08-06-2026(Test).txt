@@ -1,5 +1,24 @@
 TEST-------------------------------------------------------------------------
-
+QUESTIONS
+1. Find all students from the CS department with marks greater than 80.
+2. Find students whose marks are between 60 and 85 (inclusive) using $gte and $lte.
+3. Find all students who are either from IT or ECE department using $in operator.
+4. Find students NOT in the CS department using $nin and project only name and dept.
+5. Find students where the address.city is 'Chennai' using dot notation.
+6. Find total revenue per category using $group and $sum on a computed field (price × sold).
+7. Use aggregation to find total number of students and average marks per department.
+8. Remove the 'scholarship' field from all students using $unset.
+9. Add a new field 'scholarship' with value false to all CS students using $set.
+10. Increment marks of student with _id:6 by 10 using $inc.
+11. Find the 3rd and 4th highest scoring students using sort, skip, and limit (pagination).
+12. Find employees whose salary is greater than 50000 and experience greater than 5.
+13. Find employees whose skills array size is greater than 2.
+14. Find departments whose average salary is greater than 50000.
+15. Find minimum salary in each department.
+16. Rename field city to location.
+17. Find products where stock is of type Number using $type operator.
+18. Set the active status to true for all inactive students using updateMany and $set.
+-----------------------------------------------------------------------------
 1.db.students.find({ 
   dept: "CS", 
   marks: { $gt: 80 } 
